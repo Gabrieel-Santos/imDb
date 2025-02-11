@@ -1,21 +1,24 @@
+import streamlit as st
 import pandas as pd
 
-# Lista de arquivos do Google Drive
-urls = {
-    "name.basics": "https://drive.google.com/uc?id=1WqfVGRwrgQVssX-c0gYgTJSOu1daqoYU",
-    "title.akas": "https://drive.google.com/uc?id=1Y2dyx2IXE6meDOjxsRe2ADLGVmUjPYaM",
-    "title.basics": "https://drive.google.com/uc?id=130l9jmHkSgqzBkyP_THjbpgBzc4Bcr3i",
-    "title.crew": "https://drive.google.com/uc?id=1QJtP_Adw0yS5od76_hbyFH6fql0ySJvD",
-    "title.episode": "https://drive.google.com/uc?id=1dHvZh1uAGV-KIXUTY-jdGM1zxkZLeva_",
-    "title.principals": "https://drive.google.com/uc?id=1lh9ldNkF48n_5EGOHhsusFSU32Xw4poh",
-    "title.ratings": "https://drive.google.com/uc?id=15bwv9vNWiBA74b9v4VSRrogR_1DuNyd1"
+# Dicionário com os links dos arquivos Parquet no Google Drive
+data_links = {
+    "name.basics": "https://drive.google.com/uc?id=1gvQjMsZ7MWTnQf0Ryb1XuuChozExuoxF",
+    "title.akas": "https://drive.google.com/uc?id=1LYpCjFMoPEasJkm6HPG2_oxYh7RpI_pN",
+    "title.basics": "https://drive.google.com/uc?id=1uarqLz06y_YHmW7bNsPCV48s6fUtJ0q4",
+    "title.crew": "https://drive.google.com/uc?id=1B9_r_RCk0JhfZ_kuIMHb9IB60DsFHeTn",
+    "title.episode": "https://drive.google.com/uc?id=1rVmHqWGjRP3aixYlzAHii-tQfp-iryPn",
+    "title.principals": "https://drive.google.com/uc?id=1r7j30kOT-i5QdXndsqDYQ0oJAE2y3T13",
+    "title.ratings": "https://drive.google.com/uc?id=1-SRjvgnx9HcFO5kFA4bxxiMnmGQJXO8N"
 }
 
-# Testar carregamento dos arquivos
-for name, url in urls.items():
+st.title("Visualização dos Arquivos IMDb")
+
+for name, url in data_links.items():
+    st.subheader(f"🔍 {name}")
+    
     try:
-        print(f"Carregando {name}...")
-        df = pd.read_csv(url, sep="\t", low_memory=False)  # TSV usa tabulação como separador
-        print(df.head(), "\n")
+        df = pd.read_parquet(url)
+        st.write(df.head())  # Exibe as primeiras linhas do dataframe
     except Exception as e:
-        print(f"Erro ao carregar {name}: {e}\n")
+        st.error(f"Erro ao carregar {name}: {e}")
