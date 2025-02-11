@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-# Dicionário com os links dos arquivos Parquet no Google Drive
+# Links corrigidos
 data_links = {
     "name.basics": "https://drive.google.com/uc?id=1gvQjMsZ7MWTnQf0Ryb1XuuChozExuoxF",
     "title.akas": "https://drive.google.com/uc?id=1LYpCjFMoPEasJkm6HPG2_oxYh7RpI_pN",
@@ -18,7 +18,14 @@ for name, url in data_links.items():
     st.subheader(f"🔍 {name}")
     
     try:
-        df = pd.read_parquet(url)
-        st.write(df.head())  # Exibe as primeiras linhas do dataframe
+        # Carrega apenas as primeiras 1000 linhas para evitar estouro de memória
+        df = pd.read_parquet(url, engine="pyarrow")  
+        
+        # Exibe a forma do DataFrame
+        st.write(f"Tamanho do DataFrame: {df.shape}")
+        
+        # Exibe as primeiras 5 linhas
+        st.write(df.head())  
+
     except Exception as e:
         st.error(f"Erro ao carregar {name}: {e}")
