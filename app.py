@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-# Links corrigidos
+# Links corrigidos para download direto
 data_links = {
     "name.basics": "https://drive.google.com/uc?id=1gvQjMsZ7MWTnQf0Ryb1XuuChozExuoxF",
     "title.akas": "https://drive.google.com/uc?id=1LYpCjFMoPEasJkm6HPG2_oxYh7RpI_pN",
@@ -19,7 +19,7 @@ for name, url in data_links.items():
     
     try:
         # Carrega apenas as primeiras 1000 linhas para evitar estouro de memória
-        df = pd.read_parquet(url, engine="pyarrow")  
+        df = pd.read_csv(url, sep='\t', nrows=1000)  
         
         # Exibe a forma do DataFrame
         st.write(f"Tamanho do DataFrame: {df.shape}")
