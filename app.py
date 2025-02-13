@@ -2,14 +2,23 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# URLs diretas dos arquivos no Google Drive
+file_urls = {
+    "title_basics": "https://drive.google.com/uc?id=17w3uW_R-qJfBrUf1FlW8tA7dqnmK9gsG",
+    "title_ratings": "https://drive.google.com/uc?id=1yT6P4dHwqQ_D_7KHY8IXgdS0r1FqJy-L",
+    "title_akas": "https://drive.google.com/uc?id=1IwDE1-KK_35bejhRjVduw597fWTukM8Z",
+    "title_crew": "https://drive.google.com/uc?id=1e4iv67CsY3i2LV7Br5q0hTDda2OmgMj4",
+    "title_principals": "https://drive.google.com/uc?id=1wDR3Pkk-EHqpIe641BRyrJ8iGthbpt-F"
+}
+
 # Carregar dados processados
 @st.cache_data
 def load_data():
-    title_basics = pd.read_parquet("title.basics.parquet")
-    title_ratings = pd.read_parquet("title.ratings.parquet")
-    title_akas = pd.read_parquet("title.akas.parquet")
-    title_crew = pd.read_parquet("title.crew.parquet")
-    title_principals = pd.read_parquet("title.principals.parquet")
+    title_basics = pd.read_parquet(file_urls["title_basics"])
+    title_ratings = pd.read_parquet(file_urls["title_ratings"])
+    title_akas = pd.read_parquet(file_urls["title_akas"])
+    title_crew = pd.read_parquet(file_urls["title_crew"])
+    title_principals = pd.read_parquet(file_urls["title_principals"])
     
     # Merge ratings com title_basics
     movies = title_basics.merge(title_ratings, on="tconst", how="left")
@@ -19,7 +28,7 @@ movies, title_akas, title_crew, title_principals = load_data()
 
 # Sidebar - Filtros
 st.sidebar.header("Filtros Dinâmicos")
-selected_year = st.sidebar.slider("Ano de Lançamento", 1975, 2025, (2000, 2025))
+selected_year = st.sidebar.slider("Ano de Lançamento", 1925, 2025, (2000, 2025))
 selected_rating = st.sidebar.slider("Nota mínima no IMDb", 0.0, 10.0, 5.0)
 selected_votes = st.sidebar.slider("Número mínimo de votos", 0, 500000, 1000)
 selected_genres = st.sidebar.text_input("Filtrar por Gênero (ex: Action, Drama)")
@@ -43,7 +52,7 @@ fig = px.histogram(filtered_movies, x="averageRating", nbins=20, title="Distribu
 st.plotly_chart(fig)
 
 # Gráfico - Relação entre votos e notas
-st.subheader("Relação entre Número de Votos e Nota Média.")
+st.subheader("Relação entre Número de Votos e Nota Média")
 fig = px.scatter(filtered_movies, x="numVotes", y="averageRating", title="Número de Votos vs. Nota Média", log_x=True)
 st.plotly_chart(fig)
 
@@ -57,4 +66,3 @@ st.plotly_chart(fig)
 st.subheader("Top 10 Filmes Mais Votados")
 top_movies = filtered_movies.sort_values(by="numVotes", ascending=False).head(10)
 st.table(top_movies[['primaryTitle', 'startYear', 'averageRating', 'numVotes']])
-
