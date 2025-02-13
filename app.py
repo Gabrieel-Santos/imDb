@@ -43,7 +43,7 @@ fig = px.histogram(filtered_movies, x="averageRating", nbins=20, title="Distribu
 st.plotly_chart(fig)
 
 # Gráfico - Relação entre votos e notas
-st.subheader("Relação entre Número de Votos e Nota Média")
+st.subheader("Relação entre Número de Votos e Nota Média.")
 fig = px.scatter(filtered_movies, x="numVotes", y="averageRating", title="Número de Votos vs. Nota Média", log_x=True)
 st.plotly_chart(fig)
 
