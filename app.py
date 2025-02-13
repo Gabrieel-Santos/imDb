@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import requests
+import io
 
 # Links diretos para os arquivos no Google Drive
 file_links = {
@@ -14,7 +16,11 @@ file_links = {
 # Função para carregar os arquivos diretamente do Google Drive
 @st.cache_data
 def load_data():
-    data = {name: pd.read_parquet(url) for name, url in file_links.items()}
+    data = {}
+    for name, url in file_links.items():
+        response = requests.get(url)
+        response.raise_for_status()
+        data[name] = pd.read_parquet(io.BytesIO(response.content))
     
     # Merge ratings com title_basics
     movies = data["title_basics"].merge(data["title_ratings"], on="tconst", how="left")
