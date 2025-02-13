@@ -34,27 +34,27 @@ if selected_genres:
     filtered_movies = filtered_movies[filtered_movies['genres'].str.contains(selected_genres, na=False, case=False)]
 
 # Exibir tabela de filmes filtrados
-st.subheader("🎬 Filmes Filtrados")
+st.subheader("Filmes Filtrados")
 st.dataframe(filtered_movies[['primaryTitle', 'startYear', 'averageRating', 'numVotes', 'genres']].sort_values(by='averageRating', ascending=False))
 
 # Gráfico - Distribuição de notas
-st.subheader("📊 Distribuição de Notas dos Filmes")
+st.subheader("Distribuição de Notas dos Filmes")
 fig = px.histogram(filtered_movies, x="averageRating", nbins=20, title="Distribuição das Notas no IMDb")
 st.plotly_chart(fig)
 
 # Gráfico - Relação entre votos e notas
-st.subheader("📈 Relação entre Número de Votos e Nota Média")
+st.subheader("Relação entre Número de Votos e Nota Média")
 fig = px.scatter(filtered_movies, x="numVotes", y="averageRating", title="Número de Votos vs. Nota Média", log_x=True)
 st.plotly_chart(fig)
 
 # Gráfico - Evolução das notas por ano
-st.subheader("📅 Evolução da Nota Média dos Filmes ao Longo dos Anos")
+st.subheader("Evolução da Nota Média dos Filmes ao Longo dos Anos")
 ratings_per_year = filtered_movies.groupby("startYear")["averageRating"].mean().reset_index()
 fig = px.line(ratings_per_year, x="startYear", y="averageRating", title="Média das Notas por Ano")
 st.plotly_chart(fig)
 
 # Top 10 filmes mais votados
-st.subheader("🏆 Top 10 Filmes Mais Votados")
+st.subheader("Top 10 Filmes Mais Votados")
 top_movies = filtered_movies.sort_values(by="numVotes", ascending=False).head(10)
 st.table(top_movies[['primaryTitle', 'startYear', 'averageRating', 'numVotes']])
 
