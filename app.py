@@ -30,7 +30,7 @@ movies = load_data()
 if movies is not None:
     # Sidebar - Filtros
     st.sidebar.header("Filtros Dinâmicos")
-    selected_year = st.sidebar.slider("Ano de Lançamento", 1925, 2025, (2000, 2025))
+    selected_year = st.sidebar.slider("Ano de Lançamento", 1975, 2025, (2000, 2025))
     selected_rating = st.sidebar.slider("Nota mínima no IMDb", 0.0, 10.0, 5.0)
     selected_votes = st.sidebar.slider("Número mínimo de votos", 0, 500000, 1000)
     selected_genres = st.sidebar.text_input("Filtrar por Gênero (ex: Action, Drama)")
